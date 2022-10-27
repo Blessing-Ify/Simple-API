@@ -1,4 +1,6 @@
 C:\Users\Decagon\Documents\InternshipWork\API\obj\Debug\net6.0\API.csproj.AssemblyReference.cache
+C:\Users\Decagon\Documents\InternshipWork\API\obj\Debug\net6.0\API.Properties.Resources.resources
+C:\Users\Decagon\Documents\InternshipWork\API\obj\Debug\net6.0\API.csproj.GenerateResource.cache
 C:\Users\Decagon\Documents\InternshipWork\API\obj\Debug\net6.0\API.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Decagon\Documents\InternshipWork\API\obj\Debug\net6.0\API.AssemblyInfoInputs.cache
 C:\Users\Decagon\Documents\InternshipWork\API\obj\Debug\net6.0\API.AssemblyInfo.cs
@@ -15,6 +17,7 @@ C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\API.pdb
 C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\AutoMapper.dll
 C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\Humanizer.dll
+C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
 C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
@@ -29,6 +32,7 @@ C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\Microsoft.Extensi
 C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\Microsoft.Identity.Client.dll
+C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
 C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
 C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
 C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
@@ -67,7 +71,3 @@ C:\Users\Decagon\Documents\InternshipWork\API\obj\Debug\net6.0\refint\API.dll
 C:\Users\Decagon\Documents\InternshipWork\API\obj\Debug\net6.0\API.pdb
 C:\Users\Decagon\Documents\InternshipWork\API\obj\Debug\net6.0\API.genruntimeconfig.cache
 C:\Users\Decagon\Documents\InternshipWork\API\obj\Debug\net6.0\ref\API.dll
-C:\Users\Decagon\Documents\InternshipWork\API\obj\Debug\net6.0\API.Properties.Resources.resources
-C:\Users\Decagon\Documents\InternshipWork\API\obj\Debug\net6.0\API.csproj.GenerateResource.cache
-C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-C:\Users\Decagon\Documents\InternshipWork\API\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll

@@ -2,12 +2,8 @@
 
 namespace API.Service.Interface
 {
-    public interface ICourseService
+    public interface ICourseService : IGenericService<CourseDto, int, AddCourseDto, UpdateCourseDto>
     {
-        bool AddAsync(CourseDto course);
-        Task<bool> DeleteAsync(int id);
-        Task<IEnumerable<CourseDto>> GetAllAsync();
-        Task<UserDto> GetUserByIdAsync(int id);
-        Task<bool> UpdateAsync(CourseDto entity, int id);
+       
     }
 }

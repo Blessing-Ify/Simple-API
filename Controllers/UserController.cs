@@ -1,6 +1,5 @@
 ﻿using API.Dto;
 using API.Service.Interface;
-//using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -16,42 +15,74 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllUser()
+        public async Task<ActionResult<UserDto>> GetAllUsers()
         {
-            var user = _userService.GetAllAsync();
-            return Ok(user);
+            try
+            {
+                var user = await _userService.GetAllEntities(); 
+                return Ok(user);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
         }
 
-        [HttpGet("{id:int}", Name = "UserById")]
-        public IActionResult GetUser(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDto>> GetUserById(string id)
         {
-            var user = _userService.GetUserByIdAsync(id);
-            return Ok(user);
+            try
+            {
+                var user = await _userService.GetEntityById(id);
+
+                if (user == null)
+                {
+                    return BadRequest("Id not found");
+                }
+                return user;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
         }
 
-        [HttpPost]
-        public IActionResult AddUser([FromBody] UserDto userDto)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUser(string id)
         {
-            if (userDto == null)
-                return BadRequest("user object is null");
-            var user = _userService.AddAsync(userDto);
-            return CreatedAtRoute("UserById", user);
+            try
+            {
+                var user = await _userService.GetEntityById(id);
+                if (user == null)
+                    return NotFound($"Course with Id = {id} was not found");
+                await _userService.DeleteEntity(id);
+                return NoContent();
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting data");
+            }
         }
 
-        [HttpDelete("{id:int}")]
-        public IActionResult DeleteUser(int id)
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<UpdateUserDto>> UpdateCourse(string id, [FromBody] UpdateUserDto userDto)
         {
-            _userService.DeleteAsync(id);
-            return NoContent();
+            try
+            {
+                if (id != userDto.Id)
+                    return BadRequest("Mismatched Id!");
+                await _userService.UpdateEntity(userDto);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error updating course");
+            }
         }
 
-        [HttpPut("{id:int}")]
-        public IActionResult UpdateUser(Guid id, [FromBody] UserDto userDto)
-        {
-            if (userDto == null)
-                return BadRequest("User object is null");
-            _userService.UpdateAsync(userDto);
-            return NoContent();
-        }
     }
 }

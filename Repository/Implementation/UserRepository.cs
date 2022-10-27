@@ -4,89 +4,67 @@ using API.Model;
 using API.Repository.Interface;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Repository.Implementation
 {
-    public class UserRepository : GenericRepository<Course>, IUserRepository
+    public class UserRepository : IUserRepository
     {
+        private readonly MainContext _context;
+        private readonly IMapper _mapper;
 
-        public UserRepository(MainContext context)
-             : base(context)
+        public UserRepository(MainContext context, IMapper mapper)
         {
+            _context = context;
+            _mapper = mapper;
         }
 
-        public Task Add(UserDto userDto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Delete(int Id)
+        public Task<UserDto> AddAsync(UserDto dto)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<UserDto>> GetAll()
+        public async Task DeleteById(string id)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.FirstOrDefaultAsync(c => c.Id == id);
+            if (user != null) 
+                _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
         }
 
-        public UserDto GetById(int Id)
+        public async Task<IEnumerable<UserDto>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var allUsers = await _context.Users.ToListAsync();
+            var users = _mapper.Map<IEnumerable<UserDto>>(allUsers);
+            return users;
         }
 
-        public Task<bool> Save()
+        public async Task<UserDto> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.FirstOrDefaultAsync(c => c.Id == id);
+            var userDto = _mapper.Map<UserDto>(user);
+            return userDto;
         }
 
-        public Task Update(UserDto user)
+        public async Task<UpdateUserDto> Update(UpdateUserDto dto)
         {
-            throw new NotImplementedException();
+            var newUser = _mapper.Map<User>(dto);
+            var user = await _context.Users.FirstOrDefaultAsync(e => e.Id == newUser.Id);
+            if (user != null)
+                // _mapper.Map(course, newCourse);
+                user.Id = newUser.Id;
+            user.FirstName = newUser.FirstName;
+            user.LastName = newUser.LastName;
+            user.Email = newUser.Email;
+            await _context.SaveChangesAsync();
+            var result = _mapper.Map<UpdateUserDto>(user);
+            return result;
         }
-        /* public async Task Add(UserDto userDto)
-{
-    var user = _mapper.Map<User>(userDto);
-        await _context.Users.AddAsync(user);
-}
 
-public bool Delete(int id)
-{
-  var result =  _context.Users.FirstOrDefault(e => e.Id == id.ToString());
-    if (result == null)
-        return false;
-    _context.Users.Remove(result);
-    return true;
-}
-
-public UserDto GetById(int id)
-{
-    var user =  _context.Users.FirstOrDefault(e => e.Id == id.ToString());
-    if(user == null)
-        return null;
-    var result = _mapper.Map<UserDto>(user);
-    return result;
-}
-
-public async Task<IEnumerable<UserDto>> GetAll()
-{
-    var UserList = await _context.Users.AsNoTracking()
-                   .ProjectTo<UserDto>(_mapper.ConfigurationProvider).ToListAsync();
-    return UserList;
-}
-
-public async Task<bool> Save()
-{
-   return await _context.SaveChangesAsync() > 0;
-}
-
-public async Task Update(UserDto userDto)
-{
-    var updateUser = _mapper.Map<User>(userDto);
-    await _context.Users.AddAsync(updateUser);
-}*/
+        public async void Save()
+        {
+            await _context.SaveChangesAsync();
+        }                
     }
 }
-
-

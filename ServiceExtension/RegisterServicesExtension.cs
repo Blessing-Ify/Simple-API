@@ -37,18 +37,19 @@ namespace API.ServiceExtension
 
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            var builder = services.AddIdentity<User, IdentityRole>(o =>
-            {
-                o.Password.RequireDigit = true;
-                o.Password.RequireLowercase = false;
-                o.Password.RequireUppercase = false;
-                o.Password.RequireNonAlphanumeric = false;
-                o.Password.RequiredLength = 10;
-                o.User.RequireUniqueEmail = true;
-            })
+            var builder = services.AddIdentity<User, IdentityRole>()
             .AddEntityFrameworkStores<MainContext>()
             .AddDefaultTokenProviders();
         }
         
     }
 }
+/*(o =>
+{
+    o.Password.RequireDigit = true;
+    o.Password.RequireLowercase = false;
+    o.Password.RequireUppercase = false;
+    o.Password.RequireNonAlphanumeric = false;
+    o.Password.RequiredLength = 10;
+    o.User.RequireUniqueEmail = true;
+})*/

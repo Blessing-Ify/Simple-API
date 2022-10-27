@@ -1,51 +1,48 @@
 ﻿using API.Dto;
+using API.Model;
 using API.Repository.Interface;
 using API.Service.Interface;
+using AutoMapper;
 
 namespace API.Service.Implementation
 {
     public class UserServices : IUserService
     {
+        private readonly IMapper _mapper;
         private readonly IUserRepository _userRepo;
-        public UserServices(IUserRepository userRepo)
+        public UserServices(IMapper mapper, IUserRepository userRepo)
         {
-            _userRepo = userRepo;   
-        }
-        public bool AddAsync(UserDto entity)
-        {
-            var result = _userRepo.Add(entity);
-            _userRepo.Save();
-            if(result == null)
-                return false;
-            return true;
+            _userRepo = userRepo;
+            _mapper = mapper;
         }
 
-        public bool DeleteAsync(int id)
+        public Task<UserDto> AddEntity(UserDto dto)
         {
-            var result = _userRepo.Delete(id);
-            _userRepo.Save();
-            if (result == false)
-                return false;
-            return true;
+            throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<UserDto>> GetAllAsync()
+        public async Task DeleteEntity(string id)
         {
-            return await _userRepo.GetAll();            
+            await _userRepo.DeleteById(id);
         }
 
-        public UserDto GetUserByIdAsync(int id)
+        public async Task<IEnumerable<UserDto>> GetAllEntities()
         {
-            return _userRepo.GetById(id);
+            var entity = await _userRepo.GetAllAsync();
+            return entity;
         }
 
-        public bool UpdateAsync(UserDto entity)
+        public async Task<UserDto> GetEntityById(string id)
         {
-            var result = _userRepo.Update(entity);
-            _userRepo.Save();
-            if (result == null)
-                return false;
-            return true;
+            var entity = await _userRepo.GetByIdAsync(id);
+            var result = _mapper.Map<UserDto>(entity);
+            return result;
+        }
+
+        public async Task<UpdateUserDto> UpdateEntity(UpdateUserDto dto)
+        {
+            var result = await _userRepo.Update(dto);
+            return result;
         }
     }
 }

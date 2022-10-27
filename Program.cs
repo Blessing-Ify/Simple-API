@@ -5,6 +5,7 @@ using API.Repository.Interface;
 using API.Service.Implementation;
 using API.Service.Interface;
 using API.ServiceExtension;
+using API.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -15,14 +16,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<MainContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConn")));
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-//builder.Services.AddScoped<IGenericRepository, GenericRepository>();
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddTransient<ICourseService, CourseService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+//builder.Services.AddAutoMapper(typeof(Automapper));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUserService, UserServices>();
-builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration); 

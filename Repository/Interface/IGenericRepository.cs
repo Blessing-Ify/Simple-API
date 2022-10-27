@@ -2,14 +2,20 @@
 
 namespace API.Repository.Interface
 {
-    public interface IGenericRepository<T>
+    public interface IGenericRepository<T, X, Y, Z> where T : class
     {
-        IQueryable<T> GetAll();
-        IQueryable<T> GetByCondition(Expression<Func<T, bool>> expression);
-        void Add(T entity);
-        void Delete(T entity);
-        void Update(T entity);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<T> GetByIdAsync(X id);
+        Task<Y> AddAsync(Y dto);
+        Task DeleteById(X id);
+        Task<Z> Update(Z dto);
         void Save();
+        /*Task<IEnumerable<T>> GetAllAsync();
+        Task<T> GetByIdAsync(int id);
+        bool DeleteById(int id);
+        Task AddAsync(Y entity);
+        Task UpdateAsync(Z entity);
+        Task<bool> Save(CancellationToken cancellationToken);*/
 
     }
 }

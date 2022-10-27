@@ -9,58 +9,43 @@ namespace API.Service.Implementation
     public class CourseService : ICourseService
     {
         private readonly IMapper _mapper;
-        private readonly IRepositoryWrapper _repoWrapper;
-        public CourseService(IMapper mapper, IRepositoryWrapper repoWrapper)
+        private readonly ICourseRepository _courseRepo;
+        public CourseService(IMapper mapper, ICourseRepository courseRepo)
         {
-            _repoWrapper = repoWrapper;
+            _courseRepo = courseRepo;
             _mapper = mapper;
         }
 
-        public bool AddAsync(CourseDto course)
+        public async Task<AddCourseDto> AddEntity(AddCourseDto dto)
         {
-            if (course == null)
-                return false;
-            var entity = _mapper.Map<Course>(course);
-            _repoWrapper.CourseRepo.AddCourse(entity);
-            return true;
+            var result =  await _courseRepo.AddAsync(dto);
+            return result;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task DeleteEntity(int id)
         {
-            var course = await _repoWrapper.CourseRepo.GetCourseByIdAsync(id);
-            if (course == null)
-                return false;
-            _repoWrapper.CourseRepo.DeleteCourse(course);
-            return true;
+             await _courseRepo.DeleteById(id);
         }
 
-        public async Task<IEnumerable<CourseDto>> GetAllAsync()
+        public async Task<IEnumerable<CourseDto>> GetAllEntities()
         {
-            var courses = await _repoWrapper.CourseRepo.GetAllCourseAsync();
-            var Result = _mapper.Map<IEnumerable<CourseDto>>(courses);
-            return Result;
+            var entity = await _courseRepo.GetAllAsync();
+            return entity;
         }
 
-        public async Task<UserDto> GetUserByIdAsync(int id)
+        public async Task<CourseDto> GetEntityById(int id)
         {
-            var courses = await _repoWrapper.CourseRepo.GetCourseByIdAsync(id);
-            if (courses == null)
-                throw new Exception();
-            return _mapper.Map<UserDto>(courses);   
+            var entity = await _courseRepo.GetByIdAsync(id);
+            var result = _mapper.Map<CourseDto>(entity);
+            return result;
         }
 
-        public async Task<bool> UpdateAsync(CourseDto courseDto, int id)
-        {
-            if (courseDto == null)
-                return false;
-            var entity =  await _repoWrapper.CourseRepo.GetCourseByIdAsync(id);
-            if (entity == null)
-                return false;
-            _mapper.Map(courseDto, entity);
-            _repoWrapper.CourseRepo.UpdateCourse(entity);
-            return true;
-
+        public async Task<UpdateCourseDto> UpdateEntity(UpdateCourseDto dto)
+        {    
+            var result = await _courseRepo.Update(dto);
+            return result;
         }
-                
+
+       
     }
 }

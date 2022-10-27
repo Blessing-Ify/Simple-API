@@ -15,41 +15,88 @@ namespace API.Controllers
         }
         
         [HttpGet]
-        public IActionResult GetAllCourses()
+        public async Task<ActionResult<CourseDto>> GetAllCourses()
         {
-            var course = _courseService.GetAllAsync();
-            return Ok(course);
+            try
+            {
+                var course = await _courseService.GetAllEntities();
+                return Ok(course);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, 
+                    "Error retrieving data from the database");
+            }           
         }
 
-        [HttpGet("{id:int}", Name = "CourseById")]
-        public IActionResult GetCourse(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<CourseDto>> GetCourseById(int id)
         {
-            var course = _courseService.GetUserByIdAsync(id);
-            return Ok(course);
+            try
+            {
+                var course = await _courseService.GetEntityById(id);
+
+                if (course == null)
+                {
+                    return BadRequest("Id not found");
+                }
+                return course;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }            
         }
 
         [HttpPost]
-        public IActionResult AddCourse([FromBody] CourseDto courseDto)
+        public async Task<ActionResult<AddCourseDto>> AddCourse([FromBody] AddCourseDto courseDto)
         {
-            /*if (courseDto == null)
-                return BadRequest("user object is null");*/
-            var course = _courseService.AddAsync(courseDto);
-            return CreatedAtRoute("CourseById", course);
+            try
+            {
+                var course = await _courseService.AddEntity(courseDto);
+                return Ok(course);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error in adding course to the database");
+            }
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteUser(int id)
-        {
-            _courseService.DeleteAsync(id);
-            return NoContent();
+        public async Task<ActionResult> DeleteCourse(int id)
+        {            
+            try
+            {
+                var course = await _courseService.GetEntityById(id);
+                if (course == null)
+                    return NotFound($"Course with Id = {id} was not found");
+                await _courseService.DeleteEntity(id);
+                return NoContent();
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting data");
+            }
         }
 
 
         [HttpPut("{id}")]
-        public IActionResult UpdateCourse(int id, [FromBody] CourseDto courseDto)
-        {            
-            _courseService.UpdateAsync(courseDto, id);
-            return NoContent();
+        public async Task<ActionResult<UpdateCourseDto>> UpdateCourse(int id, [FromBody] UpdateCourseDto courseDto)
+        {
+            try
+            {
+                if (id != courseDto.Id)
+                    return BadRequest("Mismatched Id!");
+                await _courseService.UpdateEntity(courseDto);
+                return Ok();
+            }            
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error updating course");
+            }
         }
 
     }
